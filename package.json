@@ -1,0 +1,19 @@
+{
+  "name": "zkid",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "node scripts/test-proofs.js",
+    "start": "node scripts/serve.js",
+    "build:circuit": "bash scripts/rebuild.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "circom2": "^0.2.23",
+    "circomlib": "^2.0.5",
+    "snarkjs": "^0.7.6"
+  },
+  "private": true
+}

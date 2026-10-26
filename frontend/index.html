@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>zkID | Privacy-First Identity Verification</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">zk</div>
+      <div>
+        <h1>zkID</h1>
+        <p>Privacy-First Identity Verification</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span id="networkBadge" class="badge badge-off">Not connected</span>
+      <button id="connectBtn" class="btn btn-primary">Connect MetaMask</button>
+    </div>
+  </header>
+
+  <div class="banner">
+    Academic prototype on Ethereum Sepolia testnet. Not a production KYC service.
+    Birth year is typed by you. It is a simulated identity source.
+  </div>
+
+  <main class="grid">
+    <section class="card">
+      <h2>1. Wallet</h2>
+      <div class="row"><span class="label">Address</span><span id="walletAddr" class="mono">Not connected</span></div>
+      <div class="row"><span class="label">Network</span><span id="networkName">-</span></div>
+      <div class="row"><span class="label">Requirement</span><span class="pill">Age 18+</span></div>
+      <div id="networkWarn" class="alert alert-warn hidden">
+        Wrong network. Switch to Sepolia.
+        <button id="switchBtn" class="btn btn-small">Switch network</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2. Contracts</h2>
+      <label class="label" for="kycAddr">zkKYC contract address</label>
+      <input id="kycAddr" class="input mono" placeholder="0x..." spellcheck="false" />
+      <p id="kycAddrMsg" class="hint"></p>
+      <p class="hint">Deploy Verifier first, then zkKYC with the verifier address. Paste the zkKYC address here.</p>
+    </section>
+
+    <section class="card">
+      <h2>3. Private input</h2>
+      <label class="label" for="birthYear">Birth year (simulated source)</label>
+      <input id="birthYear" class="input" type="number" inputmode="numeric" min="1900" max="2100" placeholder="e.g. 2000" />
+      <p class="hint">Stays in your browser. It is never sent to the chain or any server.</p>
+      <div class="row"><span class="label">Current year (public)</span><span id="curYear" class="mono">-</span></div>
+      <div class="row"><span class="label">Age limit (public)</span><span class="mono">18</span></div>
+      <button id="proveBtn" class="btn btn-primary btn-wide" disabled>Generate Zero-Knowledge Proof</button>
+      <div id="proveStatus" class="status"></div>
+    </section>
+
+    <section class="card">
+      <h2>4. Verify on blockchain</h2>
+      <button id="verifyBtn" class="btn btn-accent btn-wide" disabled>Verify on Blockchain</button>
+      <div id="txStatus" class="status"></div>
+      <div class="row"><span class="label">Status</span><span id="verifyStatus" class="pill pill-neutral">Unknown</span></div>
+      <div class="row"><span class="label">Tx hash</span><span id="txHash" class="mono wrap">-</span></div>
+      <div class="row"><span class="label">Explorer</span><a id="txLink" href="#" target="_blank" rel="noopener noreferrer" class="hidden">View on Etherscan</a><span id="txLinkNone">-</span></div>
+      <div class="row"><span class="label">Public signals</span><span id="signals" class="mono wrap">-</span></div>
+    </section>
+
+    <section class="card card-wide">
+      <h2>How zero-knowledge verification protects your privacy</h2>
+      <div class="cols">
+        <div>
+          <h3>Private (never leaves your browser)</h3>
+          <ul>
+            <li>Your birth year</li>
+            <li>Your name and documents</li>
+            <li>The proof witness</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Public (visible on chain)</h3>
+          <ul>
+            <li>Your wallet address</li>
+            <li>The proof and 3 public signals: result, current year, age limit</li>
+            <li>The time of verification</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Limits of this prototype</h3>
+          <ul>
+            <li>A proof shows a statement is true for the input. It does not show the input is real.</li>
+            <li>A real system needs a trusted issuer to sign your birth year.</li>
+            <li>Your wallet address links all your records.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">zkID. Circom + Groth16 + SnarkJS + Solidity + Ethers v6. Sepolia testnet only.</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+  <script src="vendor/snarkjs.min.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
